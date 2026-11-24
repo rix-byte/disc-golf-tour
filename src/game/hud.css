@@ -1,0 +1,74 @@
+#hud { position: fixed; inset: 0; pointer-events: none; font-family: "Segoe UI", system-ui, sans-serif; color: #fff; user-select: none; }
+#hud b { font-weight: 800; }
+.hud-card { position: absolute; left: 18px; top: 16px; min-width: 280px; }
+.hud-card .name { display: flex; justify-content: space-between; background: #d8402f; padding: 6px 12px; border-radius: 8px 8px 0 0; font-weight: 800; letter-spacing: .04em; }
+.hud-card .name b { background: #fff; color: #111; padding: 0 8px; border-radius: 4px; }
+.hud-card .row { display: flex; align-items: center; gap: 6px; background: rgba(13,18,20,.72); padding: 8px 12px; border-radius: 0 0 8px 8px; }
+.hud-card .holeno { font-size: 22px; margin-right: 6px; }
+.hud-card i { font-style: normal; width: 22px; height: 24px; display: grid; place-items: center; border: 1px solid rgba(255,255,255,.35); border-radius: 4px; font-size: 13px; opacity: .55; }
+.hud-card i.done { background: #fff; color: #111; opacity: 1; }
+.hud-card i.now { border-color: #fac73d; color: #fac73d; opacity: 1; }
+.hud-card .for { margin-left: 8px; color: #fac73d; font-weight: 700; font-size: 13px; letter-spacing: .05em; }
+.hud-hole { position: absolute; left: 50%; top: 14px; transform: translateX(-50%); text-align: center; background: rgba(13,18,20,.72); border: 1px solid rgba(255,255,255,.12); padding: 6px 18px 8px; border-radius: 10px; }
+.hud-hole small { display: block; font-size: 11px; letter-spacing: .12em; opacity: .75; }
+.hud-hole div { font-size: 21px; font-weight: 800; letter-spacing: .03em; }
+.hud-rail { position: absolute; right: 18px; bottom: 90px; width: 190px; background: rgba(13,18,20,.72); border-radius: 12px; padding: 14px 12px; text-align: center; }
+.hud-rail .disc { width: 70px; height: 70px; margin: 0 auto 6px; border-radius: 50%; background: radial-gradient(circle at 50% 45%, color-mix(in srgb, var(--c) 70%, #fff) 0 30%, var(--c) 31% 66%, color-mix(in srgb, var(--c) 70%, #000) 67%); box-shadow: 0 3px 10px #0008; }
+.hud-rail .fn { letter-spacing: .1em; font-weight: 700; opacity: .9; margin-bottom: 6px; }
+.hud-rail .arrow { font-size: 14px; margin: 3px 0; opacity: .95; }
+.hud-rail .line { height: 1px; background: rgba(255,255,255,.2); margin: 10px 0 8px; }
+.hud-rail .sel { font-weight: 800; letter-spacing: .06em; margin: 4px 0; }
+.hud-bottom { position: absolute; left: 50%; bottom: 46px; transform: translateX(-50%); text-align: center; transition: opacity .3s; }
+.hud-dial { display: block; margin: 0 auto; }
+.hud-wind { margin-top: 2px; font-weight: 700; color: #fac73d; letter-spacing: .05em; font-size: 14px; text-shadow: 0 1px 3px #000; }
+.hud-wind .arrow { display: inline-block; color: #fff; }
+.hud-pill { position: absolute; left: 50%; top: -24px; transform: translateX(-50%); padding: 4px 12px; border-radius: 99px; font-weight: 800; opacity: 0; transition: opacity .2s; white-space: nowrap; }
+.hud-pill.show { opacity: 1; }
+.hud-pill.good { background: #2fb36a; } .hud-pill.ok { background: #e0a52a; } .hud-pill.bad { background: #d8402f; }
+.hud-toast { position: absolute; left: 50%; top: 92px; transform: translateX(-50%); font-size: 30px; font-weight: 800; text-shadow: 0 2px 8px #000c; opacity: 0; transition: opacity .25s; white-space: nowrap; }
+.hud-toast.show { opacity: 1; }
+.hud-hints { position: absolute; right: 18px; bottom: 14px; display: flex; gap: 14px; font-size: 12px; opacity: .8; text-shadow: 0 1px 2px #000; }
+.hud-hints b { background: rgba(255,255,255,.9); color: #111; padding: 1px 5px; border-radius: 3px; margin-right: 4px; }
+.hud-overlay { position: absolute; inset: 0; display: none; place-items: center; background: rgba(0,0,0,.35); pointer-events: auto; }
+.hud-overlay.show { display: grid; }
+.hud-overlay .card { background: rgba(13,18,20,.92); border-radius: 14px; padding: 22px 28px; text-align: center; min-width: 620px; }
+.hud-overlay h2 { margin: 0 0 14px; letter-spacing: .08em; color: #fac73d; }
+.hud-overlay table { border-collapse: collapse; margin: 0 auto 16px; }
+.hud-overlay th, .hud-overlay td { padding: 6px 10px; min-width: 26px; border-bottom: 1px solid rgba(255,255,255,.1); }
+.hud-overlay th { text-align: left; opacity: .8; }
+.hud-overlay .s { display: inline-grid; place-items: center; width: 26px; height: 26px; }
+.hud-overlay .s.under { border: 2px solid #2fb36a; border-radius: 50%; }
+.hud-overlay .s.over { border: 2px solid #d8402f; }
+.hud-overlay button { font: 800 16px system-ui; padding: 10px 26px; border: 0; border-radius: 8px; background: #fac73d; color: #111; cursor: pointer; }
+.hud-overlay p { margin: 6px 0 0; font-size: 12px; opacity: .6; }
+.hud-meter { display: block; margin: 0 auto 4px; }
+.hud-mode { position: absolute; left: 18px; bottom: 14px; font: 800 12px system-ui; letter-spacing: .12em; padding: 3px 8px; border-radius: 4px; background: rgba(250,199,61,.9); color: #111; }
+/* ---------------------------------------------------------------- start menu */
+.menu { position: fixed; inset: 0; display: none; place-items: center; background: radial-gradient(ellipse at 50% 30%, rgba(20,40,28,.55), rgba(5,10,8,.88)); font-family: "Segoe UI", system-ui, sans-serif; color: #fff; z-index: 10; }
+.menu-card { width: min(440px, calc(100vw - 32px)); background: rgba(13,18,20,.92); border: 1px solid rgba(255,255,255,.1); border-radius: 16px; padding: 26px 26px 18px; box-shadow: 0 20px 60px #0009; }
+.menu h1 { margin: 0; font-size: 30px; letter-spacing: .08em; }
+.menu h1 span { color: #fac73d; }
+.menu h2 { margin: 6px 0 10px; font-size: 18px; letter-spacing: .06em; }
+.menu-course { opacity: .7; font-size: 13px; margin: 2px 0 18px; letter-spacing: .04em; }
+.menu p { font-size: 14px; opacity: .85; line-height: 1.45; }
+.menu-field { display: grid; gap: 6px; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; opacity: .9; margin-bottom: 14px; }
+.menu input { font: 600 16px system-ui; padding: 10px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,.18); background: rgba(255,255,255,.06); color: #fff; }
+.menu-buttons { display: grid; gap: 8px; margin: 8px 0; }
+.menu-buttons.row { grid-auto-flow: column; }
+.menu button { font: 700 15px system-ui; padding: 12px 14px; border-radius: 9px; border: 1px solid rgba(255,255,255,.14); background: rgba(255,255,255,.07); color: #fff; cursor: pointer; text-align: left; }
+.menu button:hover:not(:disabled) { background: rgba(255,255,255,.14); }
+.menu button:disabled { opacity: .4; cursor: default; }
+.menu button.primary { background: #fac73d; color: #111; border-color: #fac73d; }
+.menu button small { display: block; font-weight: 500; font-size: 12px; opacity: .7; margin-top: 2px; }
+.menu-settings { margin-top: 14px; display: grid; gap: 8px; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; opacity: .9; }
+.menu-settings > div { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.menu .seg { padding: 5px 9px; font-size: 12px; text-transform: none; letter-spacing: 0; }
+.menu .seg.on { background: rgba(250,199,61,.9); color: #111; }
+.menu-code { font: 800 44px ui-monospace, Consolas, monospace; letter-spacing: .35em; text-align: center; color: #fac73d; margin: 8px 0; user-select: all; }
+.menu-lobby { margin: 10px 0; padding-left: 22px; line-height: 1.8; }
+.menu-players { display: grid; gap: 6px; margin: 10px 0; }
+.menu-status { min-height: 18px; margin-top: 8px; font-size: 13px; color: #fac73d; }
+.hud-card .other { display: flex; align-items: center; gap: 8px; background: rgba(13,18,20,.6); margin-top: 3px; padding: 4px 12px; border-radius: 6px; font-size: 13px; }
+.hud-card .other i { width: 9px; height: 9px; border-radius: 50%; border: 0; opacity: 1; }
+.hud-card .other b { margin-left: auto; font-weight: 700; opacity: .85; }
+.hud-overlay .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 6px; }
