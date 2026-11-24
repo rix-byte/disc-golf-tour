@@ -26,6 +26,22 @@ export type Msg =
   | { t: "closed" };
 
 const PREFIX = "dgtour-";
+
+// How browsers find a way to each other. STUN = learn your public address (free).
+// TURN = a relay for networks that block direct connections (needs an account:
+// set VITE_TURN_URL / VITE_TURN_USER / VITE_TURN_PASS at build time).
+const env = import.meta.env;
+const ICE: RTCIceServer[] = [
+  { urls: ["stun:stun.l.google.com:19302", "stun:stun1.l.google.com:19302", "stun:stun.cloudflare.com:3478"] },
+  ...(env.VITE_TURN_URL ? [{ urls: String(env.VITE_TURN_URL).split(","), username: env.VITE_TURN_USER, credential: env.VITE_TURN_PASS }] : []),
+];
+const newPeer = (id?: string) => (id ? new Peer(id, { config: { iceServers: ICE } }) : new Peer({ config: { iceServers: ICE } }));
+/** The host's tab can lose the matchmaking link (sleep, background tab, Wi-Fi blip): get it back so friends can still find the room. */
+function keepRegistered(peer: Peer) {
+  peer.on("disconnected", () => {
+    if (!peer.destroyed) setTimeout(() => !peer.destroyed && peer.disconnected && peer.reconnect(), 1000);
+  });
+}
 const LETTERS = "ABCDEFGHJKLMNPQRSTUVWXYZ"; // no I/O: easy to read out loud
 
 export class Net {
@@ -53,7 +69,7 @@ export class Net {
   static async host(name: string): Promise<Net> {
     for (let attempt = 0; attempt < 4; attempt++) {
       const code = Array.from({ length: 5 }, () => LETTERS[Math.floor(Math.random() * LETTERS.length)]).join("");
-      const peer = new Peer(PREFIX + code);
+      const peer = newPeer(PREFIX + code);
       // A taken code just means: roll another one. Anything else is a real failure.
       const ok = await new Promise<boolean>((res, rej) => {
         peer.on("open", () => res(true));
@@ -67,6 +83,7 @@ export class Net {
       net.myId = "p0";
       net.players = [{ id: "p0", name }];
       peer.on("connection", (c) => net.accept(c));
+      keepRegistered(peer);
       return net;
     }
     throw new Error("Couldn't find a free room code; try again");
@@ -74,7 +91,7 @@ export class Net {
 
   /** Join a room by its code. */
   static async join(code: string, name: string): Promise<Net> {
-    const peer = new Peer();
+    const peer = newPeer();
     await new Promise<void>((res, rej) => {
       peer.on("open", () => res());
       peer.on("error", (e) => rej(new Error(`Couldn't reach the matchmaking service (${(e as Error).message})`)));
@@ -83,10 +100,14 @@ export class Net {
     const conn = peer.connect(PREFIX + net.code, { reliable: true });
     net.hostConn = conn;
     await new Promise<void>((res, rej) => {
-      const timer = setTimeout(() => rej(new Error("Room not found (check the code)")), 9000);
+      // The broker knows the room but no connection opens: a network in between blocks it.
+      const timer = setTimeout(
+        () => rej(new Error("Found the room, but your networks can't connect directly. Try both on the same Wi-Fi, or one on a phone hotspot.")),
+        15000,
+      );
       peer.on("error", (e) => {
         clearTimeout(timer);
-        rej(new Error((e as { type?: string }).type === "peer-unavailable" ? "Room not found (check the code)" : String((e as Error).message)));
+        rej(new Error((e as { type?: string }).type === "peer-unavailable" ? "No room with that code — check it, and keep the host's game open in front" : String((e as Error).message)));
       });
       conn.on("open", () => {
         clearTimeout(timer);

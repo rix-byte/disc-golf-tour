@@ -28,6 +28,11 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run build
+        env:
+          # Optional relay for strict networks (repo Settings -> Secrets and variables -> Actions).
+          VITE_TURN_URL: ${{ secrets.TURN_URL }}
+          VITE_TURN_USER: ${{ secrets.TURN_USER }}
+          VITE_TURN_PASS: ${{ secrets.TURN_PASS }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
